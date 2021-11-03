@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import chardet
 import os
+import sys
 import shutil
 import random
 import hashlib
 import webbrowser
+import platform
 
 import requests
 from wox import Wox
@@ -20,6 +23,13 @@ EMPTY_RESULT = {
 }
 
 class Main(Wox):
+
+  def __init__(self):
+    if int(platform.python_version_tuple()[0]) == 2:
+      # python2 命令之后的参数如果不是ASCII编码则解码为gbk
+      if chardet.detect(sys.argv[1])["encoding"] != "ascii":
+        sys.argv[1] = sys.argv[1].decode("gbk")
+    super(Main, self).__init__()
 
   def query(self, param):
     result = []
